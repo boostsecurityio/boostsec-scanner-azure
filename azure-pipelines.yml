@@ -1,0 +1,20 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+variables:
+  - group: boost-prod
+  - name: api_token
+    value: $[variables.BOOST_API_TOKEN]
+
+steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 1
+    persistCredentials: true
+  - template: templates/scanner.yaml
+    parameters:
+      api_token: $(api_token)
+      registry_module: boostsecurityio/native-scanner

@@ -1,0 +1,112 @@
+parameters:
+  - name: additional_args
+    default: ""
+    type: string
+  - name: api_enabled
+    default: true
+    type: boolean
+  - name: api_endpoint
+    default: https://api.boostsecurity.io
+    type: string
+  - name: api_token
+    default: ""
+    type: string
+  - name: cli_version
+    default: "1"
+    type: string
+  - name: ignore_failure
+    default: false
+    type: boolean
+  - name: log_level
+    default: INFO
+    type: string
+    values:
+      - TRACE
+      - DEBUG
+      - INFO
+      - WARNING
+      - ERROR
+  - name: main_branch
+    default: ""
+    type: string
+  - name: pre_scan_cmd
+    default: ""
+    type: string
+  - name: registry_module
+    default: ""
+    type: string
+  - name: scanner_id
+    default: ""
+    type: string
+  - name: scan_label
+    default: ""
+    type: string
+  - name: scan_path
+    default: ""
+    type: string
+  - name: scan_timeout
+    default: 120
+    type: number
+
+
+steps:
+  - bash: |
+      export BOOST_TMP_DIR=${BOOST_TMP_DIR:-${WORKSPACE_TMP:-${TMPDIR:-/tmp}}}
+      export BOOST_EXE=${BOOST_EXE:-${BOOST_TMP_DIR}/boost-cli/latest}
+
+      export BOOST_CLI_URL=${BOOST_CLI_URL:-https://assets.build.boostsecurity.io}
+             BOOST_CLI_URL=${BOOST_CLI_URL%*/}
+      export BOOST_DOWNLOAD_URL=${BOOST_DOWNLOAD_URL:-${BOOST_CLI_URL}/boost-cli/get-boost-cli}
+
+      echo "##vso[task.setvariable variable=BOOST_EXE;issecret=false]${BOOST_EXE}"
+      echo "##vso[task.setvariable variable=BOOST_TMP_DIR;issecret=false]${BOOST_TMP_DIR}"
+
+      mkdir -p "${BOOST_TMP_DIR}"
+      curl --silent "${BOOST_DOWNLOAD_URL}" | bash
+    env:
+      BOOST_CLI_VERSION: ${{ parameters.cli_version }}
+      BOOST_LOG_LEVEL: ${{ parameters.log_level }}
+    displayName: Download Boostsecurity cli
+
+  - bash: |
+      do_scan=true
+
+      if [ "${BUILD_REASON}" == "Manual" ]; then
+        branches=(${BOOST_GIT_MAIN_BRANCH:-main master})
+
+        if [[ " ${branches[@]} " =~ " ${SYSTEM_PULLREQUEST_SOURCEBRANCH:-${BUILD_SOURCEBRANCHNAME}} " ]]; then
+          echo "is main"
+          true
+        else
+            cat <<EOF
+        We've detected a manual build against a non-main branch. In such
+        cases, azure pipeline does not provide the requisite environment
+        variables and we are therefore unable to scan.
+
+        If the scan step is required for your branch protections, we
+        recommend that you push an additional commit to this branch.
+      EOF
+
+          do_scan=false
+        fi
+      fi
+
+      if $do_scan; then
+        export BOOST_LOG_COLORS=true
+        ${BOOST_EXE} scan repo ${BOOST_CLI_ARGUMENTS:-}
+      fi
+    env:
+      BOOST_API_ENABLED: ${{ parameters.api_enabled }}
+      BOOST_API_ENDPOINT: ${{ parameters.api_endpoint }}
+      BOOST_API_TOKEN: ${{ parameters.api_token }}
+      BOOST_CLI_ARGUMENTS: ${{ parameters.additional_args }}
+      BOOST_GIT_MAIN_BRANCH: ${{ parameters.main_branch }}
+      BOOST_IGNORE_FAILURE: ${{ parameters.ignore_failure }}
+      BOOST_LOG_LEVEL: ${{ parameters.log_level }}
+      BOOST_DIFF_SCAN_TIMEOUT: ${{ parameters.scan_timeout }}
+      BOOST_PRE_SCAN: ${{ parameters.pre_scan_cmd }}
+      BOOST_SCAN_LABEL: ${{ parameters.scan_label }}
+      BOOST_SCAN_PATH: ${{ parameters.scan_path }}
+      BOOST_SCANNER_ID: ${{ parameters.scanner_id }}
+      BOOST_SCANNER_REGISTRY_MODULE: ${{ parameters.registry_module }}
+    displayName: Execute Boostsecurity scanner
