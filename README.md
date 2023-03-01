@@ -14,6 +14,13 @@ trigger:
 pr:
   - main
 
+resources:
+  repositories:
+    - repository: boostsecurity
+      type: github
+      name: boostsecurityio/boostsec-scanner-azure
+      ref: refs/tags/v4
+
 variables:
   - group: boost-prod
   - name: api_token
@@ -24,7 +31,7 @@ steps:
     clean: true
     fetchDepth: 1
     persistCredentials: true
-  - template: templates/scanner.yaml
+  - template: scanner.yaml@boostsecurity
     parameters:
       api_token: $(api_token)
       registry_module: boostsecurityio/native-scanner
