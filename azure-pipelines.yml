@@ -22,7 +22,7 @@ steps:
     fetchDepth: 1
     persistCredentials: true
 
-  - template: scanner.yaml@boostsecurityio
+  - template: templates/scanner.yaml@boostsecurityio
     parameters:
       api_enabled: false
       registry_module: boostsecurityio/native-scanner
