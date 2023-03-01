@@ -6,9 +6,10 @@ pr:
 
 resources:
   repositories:
-    - repository: boostsecurity
+    - repository: boostsecurityio
       type: github
       name: boostsecurityio/boostsec-scanner-azure
+      endpoint: boostsecurityio
 
 variables:
   - group: boost-prod
@@ -21,7 +22,7 @@ steps:
     fetchDepth: 1
     persistCredentials: true
 
-  - template: scanner.yaml@boostsecurity
+  - template: scanner.yaml@boostsecurityio
     parameters:
       api_enabled: false
       registry_module: boostsecurityio/native-scanner
