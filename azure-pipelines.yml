@@ -7,9 +7,10 @@ pr:
 resources:
   repositories:
     - repository: boostsecurityio
-      type: github
-      name: boostsecurityio/boostsec-scanner-azure
       endpoint: boostsecurityio
+      name: boostsecurityio/boostsec-scanner-azure
+      ref: refs/tags/v4
+      type: github
 
 variables:
   - group: boost-prod
