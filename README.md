@@ -3,6 +3,11 @@
 Executes the Boost Security Scanner cli tool to scan repositories for
 vulnerabilities and uploads results to the Boost Security API.
 
+## Requirements
+
+- A _Service Endpoint_ needs to have been created for Github. If your source repository is already hosted on Github, then it will already exist.
+- A _Variable Group_ should be created containing the _BOOST_API_TOKEN_ so that it may be passed into the template.
+
 ## Example
 
 Add the following to your `azure-pipelines.yml`:
@@ -16,10 +21,11 @@ pr:
 
 resources:
   repositories:
-    - repository: boostsecurity
-      type: github
+    - repository: boostsecurityio
+      endpoint: GITHUB_SERVICE_ENDPOINT_NAME
       name: boostsecurityio/boostsec-scanner-azure
       ref: refs/tags/v4
+      type: github
 
 variables:
   - group: boost-prod
