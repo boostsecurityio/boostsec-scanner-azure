@@ -9,7 +9,6 @@ resources:
     - repository: boostsecurity
       type: github
       name: boostsecurityio/boostsec-scanner-azure
-      ref: refs/tags/v4
 
 variables:
   - group: boost-prod
