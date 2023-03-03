@@ -1,0 +1,5 @@
+*.vsix
+.taskkey
+dist
+BoostSecurityScan/
+node_modules
