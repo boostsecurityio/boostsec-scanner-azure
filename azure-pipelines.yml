@@ -17,10 +17,8 @@ steps:
 
   - task: BoostSecurityScan@0
     inputs:
-      api_token: $(api_token)
-      registry_module: boostsecurityio/native-scanner
-    env:
-      BOOST_API_TOKEN: $(api_token)
+      apiToken: $(api_token)
+      registryModule: boostsecurityio/native-scanner
 
   - template: templates/scanner.yaml
     parameters:
