@@ -23,7 +23,7 @@ steps:
     fetchDepth: 1
     persistCredentials: true
 
-  - task: BoostSecurityScan@0
+  - task: BoostSecurityScan@0.1.7
     inputs:
       api_token: $(api_token)
       registry_module: boostsecurityio/native-scanner
