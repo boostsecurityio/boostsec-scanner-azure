@@ -23,12 +23,13 @@ steps:
     fetchDepth: 1
     persistCredentials: true
 
-  - template: templates/scanner.yaml@boostsecurityio
-    parameters:
-      api_enabled: false
+  - task: BoostSecurityScan@0
+    inputs:
+      api_token: $(api_token)
       registry_module: boostsecurityio/native-scanner
 
   - template: templates/scanner.yaml
     parameters:
+      api_enabled: false
       api_token: $(api_token)
       registry_module: boostsecurityio/native-scanner
