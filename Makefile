@@ -23,6 +23,10 @@ build: .phony clean
 	cp -r ${SRCDIR}/package* ${DSTDIR}/
 	pushd ${DSTDIR} > /dev/null && npm install --omit=dev
 
+build.dev: ## build dev release package
+build.dev: DSTDIR=BoostSecurityScanDev
+build.dev: build
+
 package.dev: ## package dev release
 package.dev:
 	npx tfx-cli extension create --manifest-globs vss-extension.dev.json --rev-version

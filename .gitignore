@@ -3,4 +3,5 @@
 .taskkey
 dist
 BoostSecurityScan/
+BoostSecurityScanDev/
 node_modules

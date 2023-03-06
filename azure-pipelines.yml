@@ -57,7 +57,7 @@ stages:
             inputs:
               targetType: "inline"
               script: |
-                make build
+                make build.dev
           - task: QueryAzureDevOpsExtensionVersion@4
             name: QueryVersion
             inputs:
