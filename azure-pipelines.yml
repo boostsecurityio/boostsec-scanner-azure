@@ -64,6 +64,7 @@ stages:
               registryModule: boostsecurityio/native-scanner
   - stage: PackageProd
     condition: eq(variables.isMain, 'true')
+    dependsOn: Test
     variables:
       - name: ExtensionId
         value: "BoostSecurityScan"
