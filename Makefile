@@ -31,6 +31,14 @@ package.prod: ## package prod release
 package.prod:
 	npx tfx-cli extension create --manifest-globs vss-extension.json --rev-version
 
+test: ## run tests
+test:
+	pushd ${SRCDIR} > /dev/null && npm run test
+
+test.ci: ## run tests in ci
+test.ci:
+	pushd ${SRCDIR} > /dev/null && npm run test-ci
+
 clean: ## clean dist
 clean: .phony
 	rm -rf ${SRCDIR}/dist

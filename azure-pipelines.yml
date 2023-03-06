@@ -27,6 +27,7 @@ stages:
               targetType: "inline"
               script: |
                 make install
+                make test.ci
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
