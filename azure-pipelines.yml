@@ -27,10 +27,55 @@ stages:
             inputs:
               targetType: "inline"
               script: |
-                make install
                 make test.ci
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
               testResultsFiles: 'junit.xml'
-
+  - stage: Package_extension_and_publish_build_artifacts
+    jobs:
+      - job:
+        steps:
+          - task: TfxInstaller@4
+            inputs:
+              version: "v0.x"
+          - task: Npm@1
+            displayName: Install npm packages
+            inputs:
+              command: 'install'
+              workingDir: 'source'
+          - task: Bash@3
+            displayName: Compile Package
+            inputs:
+              targetType: "inline"
+              script: |
+                make build
+          - task: QueryAzureDevOpsExtensionVersion@4
+            name: QueryVersion
+            inputs:
+              connectTo: 'BoostSecurity'
+              connectedServiceName: 'boostsec-azure-pipeline-publisher'
+              publisherId: 'BoostSecurity'
+              extensionId: 'BoostSecurityScanDev'
+              versionAction: 'Patch'
+          - task: PackageAzureDevOpsExtension@4
+            inputs:
+              rootFolder: '$(System.DefaultWorkingDirectory)/BoostSecurityScan'
+              publisherId: 'BoostSecurity'
+              extensionId: 'BoostSecurityScanDev'
+              extensionName: 'BoostSecurity Scanner Dev'
+              extensionVersion: '$(QueryVersion.Extension.Version)'
+              updateTasksVersion: true
+              updateTasksVersionType: 'patch'
+              extensionVisibility: 'private' # Change to public if you're publishing to the marketplace
+              extensionPricing: 'free'
+          - task: CopyFiles@2
+            displayName: "Copy Files to: $(Build.ArtifactStagingDirectory)"
+            inputs:
+              Contents: "**/*.vsix"
+              TargetFolder: "$(Build.ArtifactStagingDirectory)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'BoostSecurityScanDev'
+              publishLocation: 'Container'

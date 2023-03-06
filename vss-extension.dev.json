@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "BoostSecurityScanDev",
     "name": "BoostSecurity Scanner Dev",
-    "version": "0.1.17",
+    "version": "0.0.2",
     "publisher": "BoostSecurity",
     "targets": [
         {
