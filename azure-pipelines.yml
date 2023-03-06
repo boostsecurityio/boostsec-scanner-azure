@@ -80,3 +80,29 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'BoostSecurityScanDev'
               publishLocation: 'Container'
+  - stage: Download_build_artifacts_and_publish_the_extension
+    jobs:
+      - job:
+        steps:
+          - task: TfxInstaller@4
+            inputs:
+              version: "v0.x"
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: "current"
+              downloadType: "single"
+              artifactName: "BoostSecurityScanDev"
+              downloadPath: "$(System.DefaultWorkingDirectory)"
+          - task: PublishAzureDevOpsExtension@4
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'boostsec-azure-pipeline-publisher'
+              fileType: 'vsix'
+              vsixFile: 'BoostSecurity.BoostSecurityScanDev/BoostSecurity..vsix'
+              publisherId: 'BoostSecurity'
+              extensionId: 'BoostSecurityScanDev'
+              extensionName: 'BoostSecurity Scanner Dev'
+              updateTasksVersion: false
+              extensionVisibility: 'private' # Change to public if you're publishing to the marketplace
+              extensionPricing: 'free'
+
