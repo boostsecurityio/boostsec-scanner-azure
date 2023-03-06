@@ -28,7 +28,10 @@ build: .phony clean
 build.dev: ## build dev release package
 build.dev: DSTDIR=BoostSecurityScanDev
 build.dev: build
-	cat source/task.json | sed -e 's@\(.*"id": "\).*"@\1$(DEV_UUID)"@' > $(DSTDIR)/task.json
+	cat source/task.json | \
+    jq --arg id "$(DEV_UUID)" --arg name "$(DSTDIR)" \
+      '. | .id = $$id | .name = $$name' \
+    > $(DSTDIR)/task.json
 
 package.dev: ## package dev release
 package.dev:
