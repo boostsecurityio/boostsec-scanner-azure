@@ -170,7 +170,7 @@ describe("validateEnv", () => {
     test("passes when BUILD_SOURCEBRANCHNAME is main branch", async () => {
       const params = new BoostParams(process.env, task)
       process.env.BUILD_REASON = "Manual"
-      process.env.BUILD_REPOSITORY_PROVIDER = "Github"
+      process.env.BUILD_REPOSITORY_PROVIDER = "GitHub"
       process.env.BUILD_SOURCEBRANCHNAME = "main"
 
       scanner.validateEnv(process.env, params)
@@ -185,7 +185,7 @@ describe("validateEnv", () => {
     test("passes when SYSTEM_PULLREQUEST_SOURCEBRANCH is main branch", async () => {
       const params = new BoostParams(process.env, task)
       process.env.BUILD_REASON = "Manual"
-      process.env.BUILD_REPOSITORY_PROVIDER = "Github"
+      process.env.BUILD_REPOSITORY_PROVIDER = "GitHub"
       process.env.SYSTEM_PULLREQUEST_SOURCEBRANCH = "main"
 
       scanner.validateEnv(process.env, params)
