@@ -1,0 +1,34 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+variables:
+  - group: boost-prod
+  - name: api_token
+    value: $[variables.BOOST_API_TOKEN]
+
+stages:
+  - stage: Run_and_publish_unit_tests
+    jobs:
+      - job:
+        steps:
+          - task: TfxInstaller@4
+            inputs:
+              version: "v0.x"
+          - task: Npm@1
+            inputs:
+              command: 'install'
+              workingDir: '/source'
+          - task: Bash@3
+            displayName: Compile Package
+            inputs:
+              targetType: "inline"
+              script: |
+                make install
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'junit.xml'
+
