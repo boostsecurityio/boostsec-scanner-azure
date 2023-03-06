@@ -125,15 +125,3 @@ stages:
               script: |
                 # add a delay waiting for the extension to propagate
                 sleep 60
-  - stage: Validate_plugin
-    variables:
-      - group: boost-prod
-      - name: api_token
-        value: $[variables.BOOST_API_TOKEN]
-    jobs:
-      - job:
-        steps:
-          - task: BoostSecurityScanDev@0
-            inputs:
-              apiToken: $(api_token)
-              registryModule: boostsecurityio/native-scanner

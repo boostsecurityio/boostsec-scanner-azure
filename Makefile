@@ -10,6 +10,8 @@ CI_PULL_REQUEST  ?=
 CIRCLE_BRANCH    ?=
 CIRCLE_TAG       ?=
 
+DEV_UUID := 7c8bbeb5-90f9-4abe-98f9-a5c4b028222b
+
 SRCDIR ?= source
 DSTDIR ?= BoostSecurityScan
 
@@ -26,6 +28,7 @@ build: .phony clean
 build.dev: ## build dev release package
 build.dev: DSTDIR=BoostSecurityScanDev
 build.dev: build
+	cat source/task.json | sed -e 's@\(.*"id": "\).*"@\1$(DEV_UUID)"@' > $(DSTDIR)/task.json
 
 package.dev: ## package dev release
 package.dev:
