@@ -115,7 +115,7 @@ stages:
               connectTo: "VsTeam"
               connectedServiceName: "$(ServiceName)"
               fileType: "vsix"
-              vsixFile: "$(ExtensionId)/$(PublisherId).$(ExtensionId)..vsix"
+              vsixFile: "$(ExtensionId)/$(PublisherId).$(ExtensionId)-*.vsix"
               publisherId: "$(PublisherId)"
               extensionId: "$(ExtensionId)"
               extensionName: "$(ExtensionName)"
