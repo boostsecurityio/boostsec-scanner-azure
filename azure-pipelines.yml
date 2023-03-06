@@ -13,14 +13,14 @@ variables:
     value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 stages:
-  - stage: Dev_Test
-    condition: eq(variables.isMain, 'false')
+  - stage: Test
     jobs:
       - job:
         steps:
           - template: stages/test.yaml
-  - stage: Dev_Package
-    dependsOn: Dev_Test
+  - stage: PackageDev
+    condition: eq(variables.isMain, 'false')
+    dependsOn: Test
     variables:
       - name: ExtensionId
         value: "BoostSecurityScanDev"
@@ -32,8 +32,8 @@ stages:
       - job:
         steps:
           - template: stages/package.yaml
-  - stage: Dev_Publish
-    dependsOn: Dev_Package
+  - stage: PublishDev
+    dependsOn: PackageDev
     variables:
       - name: ExtensionId
         value: "BoostSecurityScanDev"
@@ -43,8 +43,12 @@ stages:
       - job:
         steps:
           - template: stages/publish.yaml
-
-  - stage: Validate
+  - stage: ValidateDev
+    dependsOn: PackageDev
+    variables:
+      - group: boost-prod
+      - name: api_token
+        value: $[variables.BOOST_API_TOKEN]
     jobs:
       - job:
         steps:
@@ -58,4 +62,28 @@ stages:
             inputs:
               apiToken: $(api_token)
               registryModule: boostsecurityio/native-scanner
+  - stage: PackageProd
+    condition: eq(variables.isMain, 'true')
+    variables:
+      - name: ExtensionId
+        value: "BoostSecurityScan"
+      - name: ExtensionName
+        value: "BoostSecurity Scanner"
+      - name: ManifestFile
+        value: "vss-extension.json"
+    jobs:
+      - job:
+        steps:
+          - template: stages/package.yaml
+  - stage: PublishProd
+    dependsOn: PackageProd
+    variables:
+      - name: ExtensionId
+        value: "BoostSecurityScan"
+      - name: ExtensionName
+        value: "BoostSecurity Scanner"
+    jobs:
+      - job:
+        steps:
+          - template: stages/publish.yaml
 
