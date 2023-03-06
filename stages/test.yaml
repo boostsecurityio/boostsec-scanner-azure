@@ -1,10 +1,4 @@
 steps:
-  - task: Bash@3
-    displayName: Debug
-    inputs:
-      targetType: "inline"
-      script: |
-        env
   - task: TfxInstaller@4
     inputs:
       version: "v0.x"

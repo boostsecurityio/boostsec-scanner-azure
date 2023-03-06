@@ -43,3 +43,19 @@ stages:
       - job:
         steps:
           - template: stages/publish.yaml
+
+  - stage: Validate
+    jobs:
+      - job:
+          steps:
+            - task: Bash@3
+              displayName: Debug
+              inputs:
+                targetType: "inline"
+                script: |
+                  env
+            - task: BoostSecurityScanDev@0
+              inputs:
+                apiToken: $(api_token)
+                registryModule: boostsecurityio/native-scanner
+
