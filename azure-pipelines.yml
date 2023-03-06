@@ -43,8 +43,15 @@ stages:
       - job:
         steps:
           - template: stages/publish.yaml
+          - task: Bash@3
+            displayName: Sleep 120
+            inputs:
+              targetType: "inline"
+              script: |
+                # add a delay waiting for the extension to propagate
+                sleep 120
   - stage: ValidateDev
-    dependsOn: PackageDev
+    dependsOn: PublishDev
     variables:
       - group: boost-prod
       - name: api_token
