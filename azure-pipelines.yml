@@ -55,6 +55,7 @@ stages:
             inputs:
               connectTo: 'BoostSecurity'
               connectedServiceName: 'boostsec-azure-pipeline-publisher'
+              connectedServiceNameTFS: 'boostsec-azure-pipeline-publisher'
               publisherId: 'BoostSecurity'
               extensionId: 'BoostSecurityScanDev'
               versionAction: 'Patch'
