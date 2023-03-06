@@ -53,9 +53,8 @@ stages:
           - task: QueryAzureDevOpsExtensionVersion@4
             name: QueryVersion
             inputs:
-              connectTo: 'BoostSecurity'
+              connectTo: 'VsTeam'
               connectedServiceName: 'boostsec-azure-pipeline-publisher'
-              connectedServiceNameTFS: 'boostsec-azure-pipeline-publisher'
               publisherId: 'BoostSecurity'
               extensionId: 'BoostSecurityScanDev'
               versionAction: 'Patch'
