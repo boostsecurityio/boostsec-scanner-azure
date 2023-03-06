@@ -59,12 +59,6 @@ stages:
     jobs:
       - job:
         steps:
-          - task: Bash@3
-            displayName: Debug
-            inputs:
-              targetType: "inline"
-              script: |
-                env
           - task: BoostSecurityScanDev@0
             inputs:
               apiToken: $(api_token)
