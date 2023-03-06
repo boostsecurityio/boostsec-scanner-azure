@@ -1,0 +1,33 @@
+{
+    "manifestVersion": 1,
+    "id": "BoostSecurityScanDev",
+    "name": "BoostSecurity Scanner Dev",
+    "version": "0.1.17",
+    "publisher": "BoostSecurity",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "BoostSecurity scanner for azure pipelines",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "files": [
+        {
+            "path": "BoostSecurityScan"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "custom-build-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "BoostSecurityScan"
+            }
+        }
+    ]
+}
