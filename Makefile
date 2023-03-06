@@ -17,13 +17,18 @@ build: ## build release package
 build: .phony clean
 	mkdir -p ${DSTDIR}
 	pushd ${SRCDIR} > /dev/null && npx tsc
-	cp -r ${SRCDIR}/dist ${DSTDIR}/
+	mkdir -p ${DSTDIR}/dist
+	cp -r ${SRCDIR}/dist/src ${DSTDIR}/dist/
 	cp -r ${SRCDIR}/task.json ${DSTDIR}/
 	cp -r ${SRCDIR}/package* ${DSTDIR}/
 	pushd ${DSTDIR} > /dev/null && npm install --omit=dev
 
-package: ## package release
-package:
+package.dev: ## package dev release
+package.dev:
+	npx tfx-cli extension create --manifest-globs vss-extension.dev.json --rev-version
+
+package.prod: ## package prod release
+package.prod:
 	npx tfx-cli extension create --manifest-globs vss-extension.json --rev-version
 
 clean: ## clean dist
