@@ -60,7 +60,8 @@ stages:
               versionAction: 'Patch'
           - task: PackageAzureDevOpsExtension@4
             inputs:
-              rootFolder: '$(System.DefaultWorkingDirectory)/BoostSecurityScan'
+              rootFolder: '$(System.DefaultWorkingDirectory)'
+              patternManifest: 'vss-extension.dev.json'
               publisherId: 'BoostSecurity'
               extensionId: 'BoostSecurityScanDev'
               extensionName: 'BoostSecurity Scanner Dev'
