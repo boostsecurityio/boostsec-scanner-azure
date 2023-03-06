@@ -10,9 +10,9 @@ variables:
     value: $[variables.BOOST_API_TOKEN]
 
   - name: PublisherId
-    value: 'BoostSecurity'
+    value: "BoostSecurity"
   - name: ServiceName
-    value: 'boostsec-azure-pipeline-publisher'
+    value: "boostsec-azure-pipeline-publisher"
 
 stages:
   - stage: Run_and_publish_unit_tests
@@ -25,8 +25,8 @@ stages:
           - task: Npm@1
             displayName: Install npm packages
             inputs:
-              command: 'install'
-              workingDir: 'source'
+              command: "install"
+              workingDir: "source"
           - task: Bash@3
             displayName: Compile Package
             inputs:
@@ -35,16 +35,16 @@ stages:
                 make test.ci
           - task: PublishTestResults@2
             inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: 'junit.xml'
+              testResultsFormat: "JUnit"
+              testResultsFiles: "junit.xml"
   - stage: Package_extension_and_publish_build_artifacts
     variables:
       - name: ExtensionId
-        value: 'BoostSecurityScanDev'
+        value: "BoostSecurityScanDev"
       - name: ExtensionName
-        value: 'BoostSecurity Scanner Dev'
+        value: "BoostSecurity Scanner Dev"
       - name: ManifestFile
-        value: 'vss-extension.dev.json'
+        value: "vss-extension.dev.json"
     jobs:
       - job:
         steps:
@@ -54,8 +54,8 @@ stages:
           - task: Npm@1
             displayName: Install npm packages
             inputs:
-              command: 'install'
-              workingDir: 'source'
+              command: "install"
+              workingDir: "source"
           - task: Bash@3
             displayName: Compile Package
             inputs:
@@ -65,23 +65,23 @@ stages:
           - task: QueryAzureDevOpsExtensionVersion@4
             name: QueryVersion
             inputs:
-              connectTo: 'VsTeam'
+              connectTo: "VsTeam"
               connectedServiceName: $(ServiceName)
-              publisherId: '$(PublisherId)'
-              extensionId: '$(ExtensionId)'
-              versionAction: 'Patch'
+              publisherId: "$(PublisherId)"
+              extensionId: "$(ExtensionId)"
+              versionAction: "Patch"
           - task: PackageAzureDevOpsExtension@4
             inputs:
-              rootFolder: '$(System.DefaultWorkingDirectory)'
-              patternManifest: '$(ManifestFile)'
-              publisherId: '$(PublisherId)'
-              extensionId: '$(ExtensionId)'
-              extensionName: '$(ExtensionName)'
-              extensionVersion: '$(QueryVersion.Extension.Version)'
+              rootFolder: "$(System.DefaultWorkingDirectory)"
+              patternManifest: "$(ManifestFile)"
+              publisherId: "$(PublisherId)"
+              extensionId: "$(ExtensionId)"
+              extensionName: "$(ExtensionName)"
+              extensionVersion: "$(QueryVersion.Extension.Version)"
               updateTasksVersion: true
-              updateTasksVersionType: 'patch'
-              extensionVisibility: 'private' # Change to public if you're publishing to the marketplace
-              extensionPricing: 'free'
+              updateTasksVersionType: "patch"
+              extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+              extensionPricing: "free"
           - task: CopyFiles@2
             displayName: "Copy Files to: $(Build.ArtifactStagingDirectory)"
             inputs:
@@ -89,10 +89,15 @@ stages:
               TargetFolder: "$(Build.ArtifactStagingDirectory)"
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: '$(ExtensionId)'
-              publishLocation: 'Container'
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "$(ExtensionId)"
+              publishLocation: "Container"
   - stage: Download_build_artifacts_and_publish_the_extension
+    variables:
+      - name: ExtensionId
+        value: "BoostSecurityScanDev"
+      - name: ExtensionName
+        value: "BoostSecurity Scanner Dev"
     jobs:
       - job:
         steps:
@@ -103,18 +108,18 @@ stages:
             inputs:
               buildType: "current"
               downloadType: "single"
-              artifactName: "BoostSecurityScanDev"
+              artifactName: "$(ExtensionId)"
               downloadPath: "$(System.DefaultWorkingDirectory)"
           - task: PublishAzureDevOpsExtension@4
             inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'boostsec-azure-pipeline-publisher'
-              fileType: 'vsix'
-              vsixFile: 'BoostSecurity.BoostSecurityScanDev/BoostSecurity..vsix'
-              publisherId: 'BoostSecurity'
-              extensionId: 'BoostSecurityScanDev'
-              extensionName: 'BoostSecurity Scanner Dev'
+              connectTo: "VsTeam"
+              connectedServiceName: "$(ServiceName)"
+              fileType: "vsix"
+              vsixFile: "$(ExtensionId)/$(PublisherId).$(ExtensionId)..vsix"
+              publisherId: "$(PublisherId)"
+              extensionId: "$(ExtensionId)"
+              extensionName: "$(ExtensionName)"
               updateTasksVersion: false
-              extensionVisibility: 'private' # Change to public if you're publishing to the marketplace
-              extensionPricing: 'free'
+              extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+              extensionPricing: "free"
 
