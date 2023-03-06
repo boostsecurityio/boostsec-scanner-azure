@@ -17,7 +17,7 @@ export class ExecutionError extends Error {
 export function validateEnv(env: any, params: BoostParams) {
   const execEnv = params.asExecEnv(env)
 
-  if (execEnv.BUILD_REPOSITORY_PROVIDER != "Github") {
+  if (execEnv.BUILD_REPOSITORY_PROVIDER != "GitHub") {
     throw Error("this extension only supports Github repositories")
   }
 

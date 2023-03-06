@@ -152,7 +152,7 @@ describe("executeCLI", () => {
 describe("validateEnv", () => {
   test("pass when conditions are met", async () => {
     const params = new BoostParams(process.env, task)
-    process.env.BUILD_REPOSITORY_PROVIDER = "Github"
+    process.env.BUILD_REPOSITORY_PROVIDER = "GitHub"
 
     scanner.validateEnv(process.env, params)
   })
