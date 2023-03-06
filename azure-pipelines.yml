@@ -9,6 +9,11 @@ variables:
   - name: api_token
     value: $[variables.BOOST_API_TOKEN]
 
+  - name: PublisherId
+    value: 'BoostSecurity'
+  - name: ServiceName
+    value: 'boostsec-azure-pipeline-publisher'
+
 stages:
   - stage: Run_and_publish_unit_tests
     jobs:
@@ -33,6 +38,13 @@ stages:
               testResultsFormat: 'JUnit'
               testResultsFiles: 'junit.xml'
   - stage: Package_extension_and_publish_build_artifacts
+    variables:
+      - name: ExtensionId
+        value: 'BoostSecurityScanDev'
+      - name: ExtensionName
+        value: 'BoostSecurity Scanner Dev'
+      - name: ManifestFile
+        value: 'vss-extension.dev.json'
     jobs:
       - job:
         steps:
@@ -54,17 +66,17 @@ stages:
             name: QueryVersion
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'boostsec-azure-pipeline-publisher'
-              publisherId: 'BoostSecurity'
-              extensionId: 'BoostSecurityScanDev'
+              connectedServiceName: $(ServiceName)
+              publisherId: '$(PublisherId)'
+              extensionId: '$(ExtensionId)'
               versionAction: 'Patch'
           - task: PackageAzureDevOpsExtension@4
             inputs:
               rootFolder: '$(System.DefaultWorkingDirectory)'
-              patternManifest: 'vss-extension.dev.json'
-              publisherId: 'BoostSecurity'
-              extensionId: 'BoostSecurityScanDev'
-              extensionName: 'BoostSecurity Scanner Dev'
+              patternManifest: '$(ManifestFile)'
+              publisherId: '$(PublisherId)'
+              extensionId: '$(ExtensionId)'
+              extensionName: '$(ExtensionName)'
               extensionVersion: '$(QueryVersion.Extension.Version)'
               updateTasksVersion: true
               updateTasksVersionType: 'patch'
@@ -78,7 +90,7 @@ stages:
           - task: PublishBuildArtifacts@1
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'BoostSecurityScanDev'
+              ArtifactName: '$(ExtensionId)'
               publishLocation: 'Container'
   - stage: Download_build_artifacts_and_publish_the_extension
     jobs:
