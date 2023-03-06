@@ -24,7 +24,7 @@ stages:
               command: "install"
               workingDir: "source"
           - task: Bash@3
-            displayName: Compile Package
+            displayName: Test Package
             inputs:
               targetType: "inline"
               script: |
