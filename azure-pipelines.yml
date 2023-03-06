@@ -5,10 +5,6 @@ pr:
   - main
 
 variables:
-  - group: boost-prod
-  - name: api_token
-    value: $[variables.BOOST_API_TOKEN]
-
   - name: PublisherId
     value: "BoostSecurity"
   - name: ServiceName
@@ -122,4 +118,18 @@ stages:
               updateTasksVersion: false
               extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
               extensionPricing: "free"
-
+          - task: Delay@1
+            inputs:
+              delayForMinutes: '1'
+  - stage: Validate_plugin
+    variables:
+      - group: boost-prod
+      - name: api_token
+        value: $[variables.BOOST_API_TOKEN]
+    jobs:
+      - job:
+        steps:
+          - task: BoostSecurityScanDev@0
+            inputs:
+              apiToken: $(api_token)
+              registryModule: boostsecurityio/native-scanner
