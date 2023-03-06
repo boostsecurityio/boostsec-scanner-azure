@@ -18,9 +18,10 @@ stages:
             inputs:
               version: "v0.x"
           - task: Npm@1
+            displayName: Install npm packages
             inputs:
               command: 'install'
-              workingDir: '/source'
+              workingDir: 'source'
           - task: Bash@3
             displayName: Compile Package
             inputs:
