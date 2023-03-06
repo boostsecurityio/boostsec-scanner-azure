@@ -118,9 +118,13 @@ stages:
               updateTasksVersion: false
               extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
               extensionPricing: "free"
-          - task: Delay@1
+          - task: Bash@3
+            displayName: Sleep 60
             inputs:
-              delayForMinutes: '1'
+              targetType: "inline"
+              script: |
+                # add a delay waiting for the extension to propagate
+                sleep 60
   - stage: Validate_plugin
     variables:
       - group: boost-prod
