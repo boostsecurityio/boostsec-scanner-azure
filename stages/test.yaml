@@ -1,0 +1,25 @@
+steps:
+  - task: Bash@3
+    displayName: Debug
+    inputs:
+      targetType: "inline"
+      script: |
+        env
+  - task: TfxInstaller@4
+    inputs:
+      version: "v0.x"
+  - task: Npm@1
+    displayName: Install npm packages
+    inputs:
+      command: "install"
+      workingDir: "source"
+  - task: Bash@3
+    displayName: Test Package
+    inputs:
+      targetType: "inline"
+      script: |
+        make test.ci
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: "JUnit"
+      testResultsFiles: "junit.xml"

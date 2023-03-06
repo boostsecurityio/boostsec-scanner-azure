@@ -9,37 +9,18 @@ variables:
     value: "BoostSecurity"
   - name: ServiceName
     value: "boostsec-azure-pipeline-publisher"
+  - name: isMain
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 stages:
-  - stage: Run_and_publish_unit_tests
+  - stage: Dev_Test
+    condition: eq(variables.isMain, 'false')
     jobs:
       - job:
         steps:
-          - task: Bash@3
-            displayName: Debug
-            inputs:
-              targetType: "inline"
-              script: |
-                env
-          - task: TfxInstaller@4
-            inputs:
-              version: "v0.x"
-          - task: Npm@1
-            displayName: Install npm packages
-            inputs:
-              command: "install"
-              workingDir: "source"
-          - task: Bash@3
-            displayName: Test Package
-            inputs:
-              targetType: "inline"
-              script: |
-                make test.ci
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFormat: "JUnit"
-              testResultsFiles: "junit.xml"
-  - stage: Package_extension_and_publish_build_artifacts
+          - template: stages/test.yaml
+  - stage: Dev_Package
+    dependsOn: Dev_Test
     variables:
       - name: ExtensionId
         value: "BoostSecurityScanDev"
@@ -50,51 +31,9 @@ stages:
     jobs:
       - job:
         steps:
-          - task: TfxInstaller@4
-            inputs:
-              version: "v0.x"
-          - task: Npm@1
-            displayName: Install npm packages
-            inputs:
-              command: "install"
-              workingDir: "source"
-          - task: Bash@3
-            displayName: Compile Package
-            inputs:
-              targetType: "inline"
-              script: |
-                make build.dev
-          - task: QueryAzureDevOpsExtensionVersion@4
-            name: QueryVersion
-            inputs:
-              connectTo: "VsTeam"
-              connectedServiceName: $(ServiceName)
-              publisherId: "$(PublisherId)"
-              extensionId: "$(ExtensionId)"
-              versionAction: "Patch"
-          - task: PackageAzureDevOpsExtension@4
-            inputs:
-              rootFolder: "$(System.DefaultWorkingDirectory)"
-              patternManifest: "$(ManifestFile)"
-              publisherId: "$(PublisherId)"
-              extensionId: "$(ExtensionId)"
-              extensionName: "$(ExtensionName)"
-              extensionVersion: "$(QueryVersion.Extension.Version)"
-              updateTasksVersion: true
-              updateTasksVersionType: "patch"
-              extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
-              extensionPricing: "free"
-          - task: CopyFiles@2
-            displayName: "Copy Files to: $(Build.ArtifactStagingDirectory)"
-            inputs:
-              Contents: "**/*.vsix"
-              TargetFolder: "$(Build.ArtifactStagingDirectory)"
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-              ArtifactName: "$(ExtensionId)"
-              publishLocation: "Container"
-  - stage: Download_build_artifacts_and_publish_the_extension
+          - template: stages/package.yaml
+  - stage: Dev_Publish
+    dependsOn: Dev_Package
     variables:
       - name: ExtensionId
         value: "BoostSecurityScanDev"
@@ -103,44 +42,4 @@ stages:
     jobs:
       - job:
         steps:
-          - task: TfxInstaller@4
-            inputs:
-              version: "v0.x"
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              buildType: "current"
-              downloadType: "single"
-              artifactName: "$(ExtensionId)"
-              downloadPath: "$(System.DefaultWorkingDirectory)"
-          - task: PublishAzureDevOpsExtension@4
-            inputs:
-              connectTo: "VsTeam"
-              connectedServiceName: "$(ServiceName)"
-              fileType: "vsix"
-              vsixFile: "$(ExtensionId)/$(PublisherId).$(ExtensionId)-*.vsix"
-              publisherId: "$(PublisherId)"
-              extensionId: "$(ExtensionId)"
-              extensionName: "$(ExtensionName)"
-              updateTasksVersion: false
-              extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
-              extensionPricing: "free"
-          - task: Bash@3
-            displayName: Sleep 60
-            inputs:
-              targetType: "inline"
-              script: |
-                # add a delay waiting for the extension to propagate
-                sleep 60
-  - stage: Validate_plugin
-    variables:
-      - group: boost-prod
-      - name: api_token
-        value: $[variables.BOOST_API_TOKEN]
-    jobs:
-      - job:
-        steps:
-          - task: BoostSecurityScanDev@0
-            inputs:
-              apiToken: $(api_token)
-              registryModule: boostsecurityio/native-scanner
-
+          - template: stages/publish.yaml
