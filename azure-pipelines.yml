@@ -4,54 +4,8 @@ trigger:
 pr:
   - main
 
-variables:
-  - name: PublisherId
-    value: "BoostSecurity"
-  - name: ServiceName
-    value: "boostsec-azure-pipeline-publisher"
-  - name: isMain
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-
 stages:
-  - stage: Test
-    jobs:
-      - job:
-        steps:
-          - template: stages/test.yaml
-  - stage: PackageDev
-    condition: eq(variables.isMain, 'false')
-    dependsOn: Test
-    variables:
-      - name: ExtensionId
-        value: "BoostSecurityScanDev"
-      - name: ExtensionName
-        value: "BoostSecurity Scanner Dev"
-      - name: ManifestFile
-        value: "vss-extension.dev.json"
-    jobs:
-      - job:
-        steps:
-          - template: stages/package.yaml
-  - stage: PublishDev
-    dependsOn: PackageDev
-    variables:
-      - name: ExtensionId
-        value: "BoostSecurityScanDev"
-      - name: ExtensionName
-        value: "BoostSecurity Scanner Dev"
-    jobs:
-      - job:
-        steps:
-          - template: stages/publish.yaml
-          - task: Bash@3
-            displayName: Sleep 120
-            inputs:
-              targetType: "inline"
-              script: |
-                # add a delay waiting for the extension to propagate
-                sleep 120
-  - stage: ValidateDev
-    dependsOn: PublishDev
+  - stage: Security Scanners
     variables:
       - group: boost-prod
       - name: api_token
@@ -59,33 +13,7 @@ stages:
     jobs:
       - job:
         steps:
-          - task: BoostSecurityScanDev@0
+          - task: BoostSecurityScan@1
             inputs:
               apiToken: $(api_token)
               registryModule: boostsecurityio/native-scanner
-  - stage: PackageProd
-    condition: eq(variables.isMain, 'true')
-    dependsOn: Test
-    variables:
-      - name: ExtensionId
-        value: "BoostSecurityScan"
-      - name: ExtensionName
-        value: "BoostSecurity Scanner"
-      - name: ManifestFile
-        value: "vss-extension.json"
-    jobs:
-      - job:
-        steps:
-          - template: stages/package.yaml
-  - stage: PublishProd
-    dependsOn: PackageProd
-    variables:
-      - name: ExtensionId
-        value: "BoostSecurityScan"
-      - name: ExtensionName
-        value: "BoostSecurity Scanner"
-    jobs:
-      - job:
-        steps:
-          - template: stages/publish.yaml
-
