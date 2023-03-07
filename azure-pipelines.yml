@@ -5,7 +5,7 @@ pr:
   - main
 
 stages:
-  - stage: Security Scanners
+  - stage: SecurityScanners
     variables:
       - group: boost-prod
       - name: api_token
