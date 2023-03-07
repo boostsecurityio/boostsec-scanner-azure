@@ -2,22 +2,18 @@
     "manifestVersion": 1,
     "id": "BoostSecurityScan",
     "name": "BoostSecurity Scanner",
-    "version": "0.1.16",
+    "version": "1.0.1",
+    "public": true,
     "publisher": "BoostSecurity",
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
     "description": "BoostSecurity scanner for azure pipelines",
     "categories": [
         "Azure Pipelines"
     ],
-    "files": [
-        {
-            "path": "BoostSecurityScan"
-        }
-    ],
+    "content": {
+      "details": {
+        "path": "listing/overview.md"
+      }
+    },
     "contributions": [
         {
             "id": "custom-build-release-task",
@@ -28,6 +24,31 @@
             "properties": {
                 "name": "BoostSecurityScan"
             }
+        }
+    ],
+    "files": [
+        {
+            "path": "BoostSecurityScan"
+        }
+    ],
+    "icons": {
+      "default": "listing/boostsecurity-logo.png"
+    },
+    "links": {
+      "home": {
+        "uri": "https://www.boostsecurity.io"
+      },
+      "documentation": {
+        "uri": "https://docs.boostsecurity.io"
+      }
+    },
+    "repository": {
+      "type": "git",
+      "uri": "https://github.com/boostsecurityio/boostsec-scanner-azure"
+    },
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
         }
     ]
 }
