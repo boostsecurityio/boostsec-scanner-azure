@@ -3,3 +3,4 @@
 .github/ @boostsecurityio/security @boostsecurityio/leads
 .makefiles/ @boostsecurityio/security @boostsecurityio/leads
 Makefile @boostsecurityio/security @boostsecurityio/leads
+azure-pipelines.yml @boostsecurityio/security @boostsecurityio/leads
