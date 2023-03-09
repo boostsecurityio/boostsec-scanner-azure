@@ -59,7 +59,7 @@ stages:
     jobs:
       - job:
         steps:
-          - task: BoostSecurityScanDev@0
+          - task: BoostSecurityScanDev@1
             inputs:
               apiToken: $(api_token)
               registryModule: boostsecurityio/native-scanner
@@ -88,4 +88,17 @@ stages:
       - job:
         steps:
           - template: stages/publish.yaml
+  - stage: ValidateProd
+    dependsOn: PublishProd
+    variables:
+      - group: boost-prod
+      - name: api_token
+        value: $[variables.BOOST_API_TOKEN]
+    jobs:
+      - job:
+        steps:
+          - task: BoostSecurityScan@1
+            inputs:
+              apiToken: $(api_token)
+              registryModule: boostsecurityio/native-scanner
 
