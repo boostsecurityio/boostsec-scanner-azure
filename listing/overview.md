@@ -14,7 +14,7 @@ variables:
     value: $[variables.BOOST_API_TOKEN]
 
 steps:
-  - task: BoostSecurityScan@0
+  - task: BoostSecurityScan@1
     inputs:
       apiToken: $(api_token)
       registryModule: boostsecurityio/native-scanner
