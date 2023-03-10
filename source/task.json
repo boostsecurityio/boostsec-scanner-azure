@@ -1,0 +1,121 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "6e732eed-cdd3-4c5f-a714-b18847a1a0a6",
+    "name": "BoostSecurityScan",
+    "friendlyName": "Boostsecurity Scanner",
+    "description": "Boostsecurity Scanner",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Boostsecurity.io",
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Echo Boostsecurity $(registryModule) scanner",
+    "inputs": [
+        {
+            "name": "additionalArgs",
+            "label": "additional args",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "apiEnabled",
+            "label": "api enabled",
+            "type": "boolean",
+            "defaultValue": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "apiEndpoint",
+            "label": "api endpoint",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "apiToken",
+            "label": "api token",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "cliVersion",
+            "label": "cli version",
+            "type": "string",
+            "defaultValue": "1",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "ignoreFailure",
+            "label": "ignore failure",
+            "type": "boolean",
+            "defaultValue": false,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "logLevel",
+            "label": "log level",
+            "type": "pickList",
+            "defaultValue": "INFO",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "mainBranch",
+            "label": "main branch",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "preScanCmd",
+            "label": "pre-scan command",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "registryModule",
+            "label": "registry module",
+            "type": "string",
+            "helpMarkDown": "",
+            "required": true
+        },
+        {
+            "name": "scannerId",
+            "label": "scanner id",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "scanLabel",
+            "label": "scan label",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "scanPath",
+            "label": "scan path",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
+        },
+        {
+            "name": "scanTimeout",
+            "label": "scan timeout",
+            "type": "int",
+            "defaultValue": "120",
+            "helpMarkDown": ""
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "./dist/src/index.js"
+        }
+    }
+}

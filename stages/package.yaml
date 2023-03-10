@@ -1,0 +1,46 @@
+steps:
+  - task: TfxInstaller@4
+    inputs:
+      version: "v0.x"
+  - task: Npm@1
+    displayName: Install npm packages
+    inputs:
+      command: "install"
+      workingDir: "source"
+  - task: Bash@3
+    displayName: Compile Package
+    inputs:
+      targetType: "inline"
+      script: |
+        make build.dev
+  - task: QueryAzureDevOpsExtensionVersion@4
+    name: QueryVersion
+    inputs:
+      connectTo: "VsTeam"
+      connectedServiceName: $(ServiceName)
+      publisherId: "$(PublisherId)"
+      extensionId: "$(ExtensionId)"
+      versionAction: "Patch"
+  - task: PackageAzureDevOpsExtension@4
+    inputs:
+      rootFolder: "$(System.DefaultWorkingDirectory)"
+      patternManifest: "$(ManifestFile)"
+      publisherId: "$(PublisherId)"
+      extensionId: "$(ExtensionId)"
+      extensionName: "$(ExtensionName)"
+      extensionVersion: "$(QueryVersion.Extension.Version)"
+      updateTasksVersion: true
+      updateTasksVersionType: "patch"
+      extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+      extensionPricing: "free"
+  - task: CopyFiles@2
+    displayName: "Copy Files to: $(Build.ArtifactStagingDirectory)"
+    inputs:
+      Contents: "**/*.vsix"
+      TargetFolder: "$(Build.ArtifactStagingDirectory)"
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "$(ExtensionId)"
+      publishLocation: "Container"
+

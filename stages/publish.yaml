@@ -1,0 +1,22 @@
+steps:
+  - task: TfxInstaller@4
+    inputs:
+      version: "v0.x"
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: "current"
+      downloadType: "single"
+      artifactName: "$(ExtensionId)"
+      downloadPath: "$(System.DefaultWorkingDirectory)"
+  - task: PublishAzureDevOpsExtension@4
+    inputs:
+      connectTo: "VsTeam"
+      connectedServiceName: "$(ServiceName)"
+      fileType: "vsix"
+      vsixFile: "$(ExtensionId)/$(PublisherId).$(ExtensionId)-*.vsix"
+      publisherId: "$(PublisherId)"
+      extensionId: "$(ExtensionId)"
+      extensionName: "$(ExtensionName)"
+      updateTasksVersion: false
+      extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+      extensionPricing: "free"
