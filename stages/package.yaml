@@ -12,7 +12,9 @@ steps:
     inputs:
       targetType: "inline"
       script: |
-        make build.dev
+        make build
+    env:
+      ExtensionId: "$(ExtensionId)"
   - task: QueryAzureDevOpsExtensionVersion@4
     name: QueryVersion
     inputs:
