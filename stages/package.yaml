@@ -34,10 +34,10 @@ steps:
       extensionVersion: "$(QueryVersion.Extension.Version)"
       updateTasksVersion: true
       updateTasksVersionType: "patch"
-      ${{ if eq(variables['ManifestFile'], 'vss-extension.json') }}:
+      ${{ if eq(variables['ExtensionId'], 'BoostSecurityScan') }}:
         extensionVisibility: "public"
       ${{ else }}:
-        extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+        extensionVisibility: "private"
       extensionPricing: "free"
   - task: CopyFiles@2
     displayName: "Copy Files to: $(Build.ArtifactStagingDirectory)"
