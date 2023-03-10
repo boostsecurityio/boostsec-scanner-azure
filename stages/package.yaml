@@ -1,5 +1,6 @@
 steps:
-  - task: TfxInstaller@4
+  # NOTE: v4.0.260 release appears broken
+  - task: TfxInstaller@4.0.220
     inputs:
       version: "v0.x"
   - task: Npm@1
