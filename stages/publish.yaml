@@ -19,5 +19,8 @@ steps:
       extensionId: "$(ExtensionId)"
       extensionName: "$(ExtensionName)"
       updateTasksVersion: false
-      extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+      ${{ if eq(variables['ExtensionId'], 'BoostSecurityScan') }}:
+        extensionVisibility: "public"
+      ${{ else }}:
+        extensionVisibility: "private"
       extensionPricing: "free"
