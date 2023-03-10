@@ -34,6 +34,9 @@ steps:
       extensionVersion: "$(QueryVersion.Extension.Version)"
       updateTasksVersion: true
       updateTasksVersionType: "patch"
+      ${{ if eq(variables['ManifestFile'], 'vss-extension.json') }}:
+      extensionVisibility: "public"
+      ${{ else }}:
       extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
       extensionPricing: "free"
   - task: CopyFiles@2
