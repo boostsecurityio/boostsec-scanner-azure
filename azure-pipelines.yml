@@ -26,6 +26,8 @@ stages:
         value: "BoostSecurityScanDev"
       - name: ExtensionName
         value: "BoostSecurity Scanner Dev"
+      - name: ExtensionVisibility
+        value: "private"
       - name: ManifestFile
         value: "vss-extension.dev.json"
     jobs:
@@ -39,6 +41,8 @@ stages:
         value: "BoostSecurityScanDev"
       - name: ExtensionName
         value: "BoostSecurity Scanner Dev"
+      - name: ExtensionVisibility
+        value: "private"
     jobs:
       - job:
         steps:
@@ -71,6 +75,8 @@ stages:
         value: "BoostSecurityScan"
       - name: ExtensionName
         value: "BoostSecurity Scanner"
+      - name: ExtensionVisibility
+        value: "public"
       - name: ManifestFile
         value: "vss-extension.json"
     jobs:
@@ -84,6 +90,8 @@ stages:
         value: "BoostSecurityScan"
       - name: ExtensionName
         value: "BoostSecurity Scanner"
+      - name: ExtensionVisibility
+        value: "public"
     jobs:
       - job:
         steps:

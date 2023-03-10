@@ -19,8 +19,5 @@ steps:
       extensionId: "$(ExtensionId)"
       extensionName: "$(ExtensionName)"
       updateTasksVersion: false
-      ${{ if eq(variables['ExtensionId'], 'BoostSecurityScan') }}:
-        extensionVisibility: "public"
-      ${{ else }}:
-        extensionVisibility: "private"
+      extensionVisibility: "$(ExtensionVisibility)"
       extensionPricing: "free"
