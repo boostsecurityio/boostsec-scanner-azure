@@ -157,13 +157,24 @@ describe("validateEnv", () => {
     scanner.validateEnv(process.env, params)
   })
 
-  test("requires github BUILD_REPOSITORY_PROVIDER", async () => {
+  test.each(["GitHub", "TfsGit"])(
+    "accepts valid %s BUILD_REPOSITORY_PROVIDER",
+    async (provider: string) => {
+      const params = new BoostParams(process.env, task)
+      process.env.BUILD_REPOSITORY_PROVIDER = provider
+      scanner.validateEnv(process.env, params)
+    }
+  )
+
+  test("requires valid BUILD_REPOSITORY_PROVIDER", async () => {
     const params = new BoostParams(process.env, task)
     process.env.BUILD_REPOSITORY_PROVIDER = "invalid"
 
     expect(() => {
       scanner.validateEnv(process.env, params)
-    }).toThrowError("this extension only supports Github repositories")
+    }).toThrowError(
+      "this extension only supports Github and TfsGit repositories"
+    )
   })
 
   describe("when BUILD_REASON is Manual", () => {
