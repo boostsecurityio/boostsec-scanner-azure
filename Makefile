@@ -10,10 +10,12 @@ CI_PULL_REQUEST  ?=
 CIRCLE_BRANCH    ?=
 CIRCLE_TAG       ?=
 
+ExtensionId ?= BoostSecurityScan
+DEV_EXTENSION ?= BoostSecurityScanDev
 DEV_UUID := 7c8bbeb5-90f9-4abe-98f9-a5c4b028222b
 
 SRCDIR ?= source
-DSTDIR ?= BoostSecurityScan
+DSTDIR ?= ${ExtensionId}
 
 build: ## build release package
 build: .phony clean
@@ -24,10 +26,16 @@ build: .phony clean
 	cp -r ${SRCDIR}/task.json ${DSTDIR}/
 	cp -r ${SRCDIR}/package* ${DSTDIR}/
 	pushd ${DSTDIR} > /dev/null && npm install --omit=dev
+ifeq (${DSTDIR},${DEV_EXTENSION})
+	make patch.dev
+endif
 
 build.dev: ## build dev release package
 build.dev: DSTDIR=BoostSecurityScanDev
 build.dev: build
+
+patch.dev: ## patch dev release package
+patch.dev:
 	cat source/task.json | \
     jq --arg id "$(DEV_UUID)" --arg name "$(DSTDIR)" \
       '. | .id = $$id | .name = $$name' \
@@ -53,6 +61,7 @@ clean: ## clean dist
 clean: .phony
 	rm -rf ${SRCDIR}/dist
 	rm -rf ${DSTDIR}
+	rm -rf ${DSTDIR}Dev
 	rm -rf tmp
 	rm -rf *.vsix
 

@@ -1,5 +1,6 @@
 steps:
-  - task: TfxInstaller@4
+  # NOTE: v4.0.260 release appears broken
+  - task: TfxInstaller@4.0.220
     inputs:
       version: "v0.x"
   - task: DownloadBuildArtifacts@0
@@ -18,5 +19,5 @@ steps:
       extensionId: "$(ExtensionId)"
       extensionName: "$(ExtensionName)"
       updateTasksVersion: false
-      extensionVisibility: "private" # Change to public if you"re publishing to the marketplace
+      extensionVisibility: "$(ExtensionVisibility)"
       extensionPricing: "free"
