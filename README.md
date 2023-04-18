@@ -14,6 +14,10 @@ variables:
     value: $[variables.BOOST_API_TOKEN]
 
 steps:
+  - checkout: self
+    clean: "true"
+    fetchDepth: "1"
+    persistCredentials: "true"
   - task: BoostSecurityScan@1
     inputs:
       apiToken: $(api_token)

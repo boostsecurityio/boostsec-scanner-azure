@@ -4,6 +4,11 @@ import * as fs from "fs"
 
 import { BoostParams } from "./params"
 
+export enum RepositoryProvider {
+  GitHub = "GitHub",
+  TfsGit = "TfsGit",
+}
+
 export class ExecutionError extends Error {
   exitCode: number
 
@@ -17,8 +22,8 @@ export class ExecutionError extends Error {
 export function validateEnv(env: any, params: BoostParams) {
   const execEnv = params.asExecEnv(env)
 
-  if (execEnv.BUILD_REPOSITORY_PROVIDER != "GitHub") {
-    throw Error("this extension only supports Github repositories")
+  if (!(execEnv.BUILD_REPOSITORY_PROVIDER in RepositoryProvider)) {
+    throw Error("this extension only supports Github and TfsGit repositories")
   }
 
   if (execEnv.BUILD_REASON == "Manual") {

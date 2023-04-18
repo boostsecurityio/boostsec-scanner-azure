@@ -63,6 +63,10 @@ stages:
     jobs:
       - job:
         steps:
+          - checkout: self
+            clean: "true"
+            fetchDepth: "1"
+            persistCredentials: "true"
           - task: BoostSecurityScanDev@1
             inputs:
               apiToken: $(api_token)
@@ -105,6 +109,10 @@ stages:
     jobs:
       - job:
         steps:
+          - checkout: self
+            clean: "true"
+            fetchDepth: "1"
+            persistCredentials: "true"
           - task: BoostSecurityScan@1
             inputs:
               apiToken: $(api_token)
