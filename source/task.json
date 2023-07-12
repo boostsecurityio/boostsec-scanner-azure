@@ -111,6 +111,13 @@
             "type": "int",
             "defaultValue": "120",
             "helpMarkDown": ""
+        },
+        {
+            "name": "workingDirectory",
+            "label": "working directory",
+            "type": "string",
+            "defaultValue": "",
+            "helpMarkDown": ""
         }
     ],
     "execution": {

@@ -14,7 +14,7 @@ jest.mock("azure-pipelines-tool-lib/tool")
 
 beforeEach(async () => {
   const tmpdir = await fs.promises.mkdtemp(
-    path.resolve(os.tmpdir(), "boostsec-scanner-szure")
+    path.resolve(os.tmpdir(), "boostsec-scanner-azure")
   )
 
   process.env = {

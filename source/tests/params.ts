@@ -8,7 +8,7 @@ const INITIAL_ENV = process.env
 
 beforeEach(async () => {
   const tmpdir = await fs.promises.mkdtemp(
-    path.resolve(os.tmpdir(), "boostsec-scanner-szure")
+    path.resolve(os.tmpdir(), "boostsec-scanner-azure")
   )
 
   process.env = {
@@ -62,6 +62,7 @@ describe("BoostParams", () => {
     ["BOOST_SCANNER_ID", "scannerId"],
     ["BOOST_SCAN_PATH", "scanPath"],
     ["BOOST_DIFF_SCAN_TIMEOUT", "scanTimeout"],
+    ["BOOST_WORKING_DIRECTORY", "workingDirectory"],
   ]
 
   test.each(GetInputTestCases)(

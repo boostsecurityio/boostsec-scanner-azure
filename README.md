@@ -91,3 +91,7 @@ When this parameter is specified, you must also provide a `scan_label` to identi
 
 The optional timeout after which the Github check will be marked as failed. This defaults to 120 seconds.
 
+### `workingDirectory` (Optional, string)
+
+Optional path to change into before executing any commands.
+

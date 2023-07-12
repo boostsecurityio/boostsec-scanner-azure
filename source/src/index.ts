@@ -2,10 +2,15 @@ import * as task from "azure-pipelines-task-lib/task"
 import * as scanner from "./scanner"
 import { BoostParams } from "./params"
 
-async function run() {
+export async function run() {
   try {
     const params = new BoostParams(process.env, task)
     scanner.validateEnv(process.env, params)
+
+    if (params.workingDirectory) {
+      process.chdir(params.workingDirectory)
+    }
+
     await scanner.downloadCLI(params)
     await scanner.executeCLI(params)
   } catch (err: unknown) {
