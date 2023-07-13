@@ -26,6 +26,10 @@ export function validateEnv(env: any, params: BoostParams) {
     throw Error("this extension only supports Github and TfsGit repositories")
   }
 
+  if (execEnv.SKIP_BRANCH_VALIDATION !== undefined) {
+    return;
+  }
+
   if (execEnv.BUILD_REASON == "Manual") {
     const sourceBranch =
       execEnv.SYSTEM_PULLREQUEST_SOURCEBRANCH ?? execEnv.BUILD_SOURCEBRANCHNAME

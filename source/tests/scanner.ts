@@ -177,6 +177,21 @@ describe("validateEnv", () => {
     )
   })
 
+  test("skips branch validation when SKIP_BRANCH_VALIDATION is defined", async () => {
+    const params = new BoostParams(process.env, task)
+    process.env.BUILD_REPOSITORY_PROVIDER = "GitHub"
+    process.env.BUILD_REASON = "Manual"
+    process.env.SYSTEM_PULLREQUEST_SOURCEBRANCH = "invalid"
+
+    expect(() => {
+      scanner.validateEnv(process.env, params)
+    }).toThrow(scanner.ExecutionError)
+
+    // Value is irrelevant, just needs to be defined
+    process.env.SKIP_BRANCH_VALIDATION = ""
+    scanner.validateEnv(process.env, params)
+  })
+
   describe("when BUILD_REASON is Manual", () => {
     test("passes when BUILD_SOURCEBRANCHNAME is main branch", async () => {
       const params = new BoostParams(process.env, task)
