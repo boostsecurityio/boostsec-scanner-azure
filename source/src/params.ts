@@ -90,28 +90,29 @@ export class BoostParams extends BoostParamsVars {
   }
 
   public loadInputs(tl: TaskLib) {
-    this.additionalArgs = tl.getInput("additionalArgs")
-    this.apiEnabled = tl.getInput("apiEnabled")
-    this.apiEndpoint = tl.getInput("apiEndpoint")
-    this.apiToken = tl.getInput("apiToken")
-    this.cliUrl = tl.getInput("cliUrl") ?? this.cliUrl
-    this.cliVersion = tl.getInput("cliVersion") ?? this.cliVersion
-    this.ignoreFailure = tl.getInput("ignoreFailure")
-    this.logColors = tl.getInput("logColors") ?? this.logColors
-    this.logLevel = tl.getInput("logLevel")
-    this.mainBranch = tl.getInput("mainBranch")
-    this.preScanCmd = tl.getInput("preScanCmd")
-    this.registryModule = tl.getInput("registryModule")
-    this.registryPath = tl.getInput("registryPath")
-    this.scanLabel = tl.getInput("scanLabel")
-    this.scannerId = tl.getInput("scannerId")
-    this.scanPath = tl.getInput("scanPath")
-    this.scanTimeout = tl.getInput("scanTimeout")
-    this.workingDirectory = tl.getInput("workingDirectory")
+    this.additionalArgs = this.loadInput(tl, "additionalArgs")
+    this.apiEnabled = this.loadInput(tl, "apiEnabled")
+    this.apiEndpoint = this.loadInput(tl, "apiEndpoint")
+    this.apiToken = this.loadInput(tl, "apiToken")
+    this.cliUrl = this.loadInput(tl, "cliUrl") ?? this.cliUrl
+    this.cliVersion = this.loadInput(tl, "cliVersion") ?? this.cliVersion
+    this.ignoreFailure = this.loadInput(tl, "ignoreFailure")
+    this.logColors = this.loadInput(tl, "logColors") ?? this.logColors
+    this.logLevel = this.loadInput(tl, "logLevel")
+    this.mainBranch = this.loadInput(tl, "mainBranch")
+    this.preScanCmd = this.loadInput(tl, "preScanCmd")
+    this.registryModule = this.loadInput(tl, "registryModule")
+    this.registryPath = this.loadInput(tl, "registryPath")
+    this.scanLabel = this.loadInput(tl, "scanLabel")
+    this.scannerId = this.loadInput(tl, "scannerId")
+    this.scanPath = this.loadInput(tl, "scanPath")
+    this.scanTimeout = this.loadInput(tl, "scanTimeout")
+    this.workingDirectory = this.loadInput(tl, "workingDirectory")
+  }
 
-    if (this.apiEndpoint === "") {
-        this.apiEndpoint = undefined;
-    }
+  public loadInput(tl: TaskLib, name: string): string | undefined {
+    let value = tl.getInput(name);
+    return value !== "" ? value : undefined;
   }
 
   public loadEnv(env: any) {
