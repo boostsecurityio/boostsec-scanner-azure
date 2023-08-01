@@ -102,4 +102,14 @@ describe("BoostParams", () => {
     const params = new BoostParams({ BOOST_API_TOKEN: "env value" }, mockTl)
     expect(params.asBoostEnv().BOOST_API_TOKEN).toStrictEqual("input value")
   })
+
+  test("ensures apiEndpoint is set to undefined if empty", async () => {
+    const mockGetInput = () => ""
+    const mockTl = {
+      getInput: mockGetInput,
+    }
+
+    const params = new BoostParams({}, mockTl)
+    expect(params.asBoostEnv().BOOST_API_ENDPOINT).toStrictEqual(undefined)
+  })
 })

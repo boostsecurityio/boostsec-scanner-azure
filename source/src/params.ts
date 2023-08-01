@@ -108,6 +108,10 @@ export class BoostParams extends BoostParamsVars {
     this.scanPath = tl.getInput("scanPath")
     this.scanTimeout = tl.getInput("scanTimeout")
     this.workingDirectory = tl.getInput("workingDirectory")
+
+    if (this.apiEndpoint === "") {
+        this.apiEndpoint = undefined;
+    }
   }
 
   public loadEnv(env: any) {
