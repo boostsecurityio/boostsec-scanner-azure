@@ -116,5 +116,5 @@ stages:
           - task: BoostSecurityScan@1
             inputs:
               apiToken: $(api_token)
-              registryModule: boostsecurityio/native-scanner
+              registryModule: boostsecurityio/scanner
 
