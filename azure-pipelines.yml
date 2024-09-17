@@ -70,7 +70,7 @@ stages:
           - task: BoostSecurityScanDev@1
             inputs:
               apiToken: $(api_token)
-              registryModule: boostsecurityio/native-scanner
+              registryModule: boostsecurityio/scanner
   - stage: PackageProd
     condition: eq(variables.isMain, 'true')
     dependsOn: Test
