@@ -30,7 +30,9 @@ const BoostParamEnvMap: BoostParamEnvMap = {
   scanLabel: "BOOST_SCAN_LABEL",
   scannerId: "BOOST_SCANNER_ID",
   scanPath: "BOOST_SCAN_PATH",
-  scanTimeout: "BOOST_DIFF_SCAN_TIMEOUT",
+  scanTimeout: "BOOST_DIFF_SCAN_TIMEOUT", // deprecated
+  scanDiffTimeout: "BOOST_DIFF_SCAN_TIMEOUT",
+  scanMainTimeout: "BOOST_MAIN_SCAN_TIMEOUT",
   tmpDir: "BOOST_TMP_DIR",
   workingDirectory: "BOOST_WORKING_DIRECTORY",
 }
@@ -54,7 +56,9 @@ class BoostParamsVars {
   scanLabel: string | undefined = ""
   scannerId: string | undefined = ""
   scanPath: string | undefined = ""
-  scanTimeout: string | undefined = ""
+  scanTimeout: string | undefined = "" // deprecated
+  scanDiffTimeout: string | undefined = ""
+  scanMainTimeout: string | undefined = ""
   tmpDir: string = ""
   workingDirectory: string | undefined = ""
 }
@@ -65,6 +69,13 @@ export class BoostParams extends BoostParamsVars {
     this.loadInputs(tl)
     this.loadEnv(env)
     this.loadDefaults(env)
+
+    if (this.scanTimeout !== undefined) {
+      if (this.scanDiffTimeout === undefined) {
+        this.scanDiffTimeout = this.scanTimeout
+        this.scanTimeout = undefined
+      }
+    }
   }
 
   public asBoostEnv(): Record<string, string> {
@@ -107,6 +118,8 @@ export class BoostParams extends BoostParamsVars {
     this.scannerId = tl.getInput("scannerId")
     this.scanPath = tl.getInput("scanPath")
     this.scanTimeout = tl.getInput("scanTimeout")
+    this.scanDiffTimeout = tl.getInput("scanDiffTimeout")
+    this.scanMainTimeout = tl.getInput("scanMainTimeout")
     this.workingDirectory = tl.getInput("workingDirectory")
   }
 
