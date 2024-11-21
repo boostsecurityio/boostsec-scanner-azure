@@ -77,7 +77,12 @@ export async function executeCLI(params: BoostParams) {
   }
 
   const cliRunner = task.tool(params.exePath)
-  cliRunner.arg(["scan", "repo"])
+  if (params.triggerId != undefined) {
+    cliRunner.arg(["scan", "trigger"])
+  } else {
+    cliRunner.arg(["scan", "repo"])
+  }
+  
   if (params.additionalArgs) {
     cliRunner.arg(params.additionalArgs.split(" "))
   }

@@ -4,8 +4,8 @@ import * as fs from "fs"
 import * as os from "os"
 import * as path from "path"
 
-import * as scanner from "../src/scanner"
 import { BoostParams } from "../src/params"
+import * as scanner from "../src/scanner"
 
 const INITIAL_ENV = process.env
 
@@ -101,6 +101,28 @@ describe("executeCLI", () => {
 
     await scanner.executeCLI(params)
     expect(mockArg).toHaveBeenCalledWith(["scan", "repo"])
+    expect(mockExec).toHaveBeenCalledWith({
+      env: params.asExecEnv(process.env),
+    })
+  })
+
+  test("executes with trigger command", async () => {
+    const params = new BoostParams(process.env, task)
+    params.exePath = path.join(params.tmpDir, "script")
+    params.triggerId = "trigger"
+
+    fs.closeSync(fs.openSync(params.exePath, "w"))
+
+    const mockTool = task.tool as jest.Mock
+    const mockArg = jest.fn()
+    const mockExec = jest.fn(async () => 0)
+    mockTool.mockReturnValue({
+      arg: mockArg,
+      exec: mockExec,
+    })
+
+    await scanner.executeCLI(params)
+    expect(mockArg).toHaveBeenCalledWith(["scan", "trigger"])
     expect(mockExec).toHaveBeenCalledWith({
       env: params.asExecEnv(process.env),
     })
