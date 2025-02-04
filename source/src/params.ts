@@ -34,6 +34,7 @@ const BoostParamEnvMap: BoostParamEnvMap = {
   scanDiffTimeout: "BOOST_DIFF_SCAN_TIMEOUT",
   scanMainTimeout: "BOOST_MAIN_SCAN_TIMEOUT",
   tmpDir: "BOOST_TMP_DIR",
+  triggerId: "BOOST_TRIGGER_ID",
   workingDirectory: "BOOST_WORKING_DIRECTORY",
 }
 
@@ -60,6 +61,7 @@ class BoostParamsVars {
   scanDiffTimeout: string | undefined = ""
   scanMainTimeout: string | undefined = ""
   tmpDir: string = ""
+  triggerId: string | undefined = ""
   workingDirectory: string | undefined = ""
 }
 
@@ -120,6 +122,7 @@ export class BoostParams extends BoostParamsVars {
     this.scanTimeout = tl.getInput("scanTimeout")
     this.scanDiffTimeout = tl.getInput("scanDiffTimeout")
     this.scanMainTimeout = tl.getInput("scanMainTimeout")
+    this.triggerId = tl.getInput("triggerId")
     this.workingDirectory = tl.getInput("workingDirectory")
   }
 

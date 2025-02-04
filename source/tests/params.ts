@@ -64,6 +64,7 @@ describe("BoostParams", () => {
     ["BOOST_DIFF_SCAN_TIMEOUT", "scanTimeout"],
     ["BOOST_DIFF_SCAN_TIMEOUT", "scanDiffTimeout"],
     ["BOOST_MAIN_SCAN_TIMEOUT", "scanMainTimeout"],
+    ["BOOST_TRIGGER_ID", "triggerId"],
     ["BOOST_WORKING_DIRECTORY", "workingDirectory"],
   ]
 
