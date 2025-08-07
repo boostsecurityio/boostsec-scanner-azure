@@ -1,6 +1,5 @@
 steps:
-  # NOTE: v4.0.260 release appears broken
-  - task: TfxInstaller@4.0.220
+  - task: TfxInstaller@4
     inputs:
       version: "v0.x"
   - task: UseNode@1
