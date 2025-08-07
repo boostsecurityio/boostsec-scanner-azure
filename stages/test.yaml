@@ -3,6 +3,10 @@ steps:
   - task: TfxInstaller@4.0.220
     inputs:
       version: "v0.x"
+  - task: UseNode@1
+    inputs:
+      version: $(nodeVersion)
+    displayName: 'Install Node.js'
   - task: Npm@1
     displayName: Install npm packages
     inputs:
