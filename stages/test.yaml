@@ -1,5 +1,5 @@
 steps:
-  - task: TfxInstaller@4
+  - task: TfxInstaller@5
     inputs:
       version: "v0.x"
   - task: UseNode@1
