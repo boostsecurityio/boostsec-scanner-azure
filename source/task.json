@@ -7,6 +7,7 @@
     "helpMarkDown": "",
     "category": "Utility",
     "author": "Boostsecurity.io",
+    "minimumAgentVersion": "2.206.1",
     "version": {
         "Major": 1,
         "Minor": 0,
@@ -121,8 +122,13 @@
         }
     ],
     "execution": {
-        "Node": {
-            "target": "./dist/src/index.js"
+        "Node16": {
+            "target": "./dist/src/index.js",
+            "argumentFormat": ""
+        },
+        "Node20_1": {
+            "target": "./dist/src/index.js",
+            "argumentFormat": ""
         }
     }
 }
