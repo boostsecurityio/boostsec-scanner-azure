@@ -1,6 +1,5 @@
 steps:
-  # NOTE: v4.0.260 release appears broken
-  - task: TfxInstaller@4.0.220
+  - task: TfxInstaller@5
     inputs:
       version: "v0.x"
   - task: DownloadBuildArtifacts@0
@@ -9,7 +8,7 @@ steps:
       downloadType: "single"
       artifactName: "$(ExtensionId)"
       downloadPath: "$(System.DefaultWorkingDirectory)"
-  - task: PublishAzureDevOpsExtension@4
+  - task: PublishAzureDevOpsExtension@5
     inputs:
       connectTo: "VsTeam"
       connectedServiceName: "$(ServiceName)"

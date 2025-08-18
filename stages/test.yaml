@@ -1,8 +1,11 @@
 steps:
-  # NOTE: v4.0.260 release appears broken
-  - task: TfxInstaller@4.0.220
+  - task: TfxInstaller@5
     inputs:
       version: "v0.x"
+  - task: UseNode@1
+    inputs:
+      version: $(nodeVersion)
+    displayName: 'Install Node.js'
   - task: Npm@1
     displayName: Install npm packages
     inputs:
