@@ -8,7 +8,7 @@ steps:
       downloadType: "single"
       artifactName: "$(ExtensionId)"
       downloadPath: "$(System.DefaultWorkingDirectory)"
-  - task: PublishAzureDevOpsExtension@4
+  - task: PublishAzureDevOpsExtension@5
     inputs:
       connectTo: "VsTeam"
       connectedServiceName: "$(ServiceName)"

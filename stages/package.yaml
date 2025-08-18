@@ -19,7 +19,7 @@ steps:
         make build
     env:
       ExtensionId: "$(ExtensionId)"
-  - task: QueryAzureDevOpsExtensionVersion@4
+  - task: QueryAzureDevOpsExtensionVersion@5
     name: QueryVersion
     inputs:
       connectTo: "VsTeam"
@@ -27,7 +27,7 @@ steps:
       publisherId: "$(PublisherId)"
       extensionId: "$(ExtensionId)"
       versionAction: "Patch"
-  - task: PackageAzureDevOpsExtension@4
+  - task: PackageAzureDevOpsExtension@5
     inputs:
       rootFolder: "$(System.DefaultWorkingDirectory)"
       patternManifest: "$(ManifestFile)"
