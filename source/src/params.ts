@@ -26,7 +26,7 @@ const BoostParamEnvMap: BoostParamEnvMap = {
   mainBranch: "BOOST_GIT_MAIN_BRANCH",
   preScanCmd: "BOOST_PRE_SCAN",
   registryModule: "BOOST_SCANNER_REGISTRY_MODULE",
-  registryPath: "BOOST_SCANNER_REGISTRY",
+  registryPath: "BOOST_SCANNER_REGISTRY_REPO",
   scanLabel: "BOOST_SCAN_LABEL",
   scannerId: "BOOST_SCANNER_ID",
   scanPath: "BOOST_SCAN_PATH",

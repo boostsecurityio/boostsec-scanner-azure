@@ -57,7 +57,7 @@ describe("BoostParams", () => {
     ["BOOST_GIT_MAIN_BRANCH", "mainBranch"],
     ["BOOST_PRE_SCAN", "preScanCmd"],
     ["BOOST_SCANNER_REGISTRY_MODULE", "registryModule"],
-    ["BOOST_SCANNER_REGISTRY", "registryPath"],
+    ["BOOST_SCANNER_REGISTRY_REPO", "registryPath"],
     ["BOOST_SCAN_LABEL", "scanLabel"],
     ["BOOST_SCANNER_ID", "scannerId"],
     ["BOOST_SCAN_PATH", "scanPath"],
